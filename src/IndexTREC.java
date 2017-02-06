@@ -58,78 +58,78 @@ public class IndexTREC {
 
 			if (create) {
 				// Create a new index in the directory, removing any
-				// 				// previously indexed documents:
-				// 								iwc.setOpenMode(OpenMode.CREATE);
-				// 											} else {
-				// 															// Add new documents to an existing index:
-				// 																			iwc.setOpenMode(OpenMode.CREATE_OR_APPEND);
-				// 																						}
-				//
-				// 																									// Optional: for better indexing performance, if you
-				// 																												// are indexing many documents, increase the RAM
-				// 																															// buffer.  But if you do this, increase the max heap
-				// 																																		// size to the JVM (eg add -Xmx512m or -Xmx1g):
-				// 																																					//
-				// 																																								iwc.setRAMBufferSizeMB(256.0);
-				//
-				// 																																											IndexWriter writer = new IndexWriter(dir, iwc);
-				// 																																														indexDocs(writer, docDir);
-				//
-				// 																																																	// NOTE: if you want to maximize search performance,
-				// 																																																				// you can optionally call forceMerge here.  This can be
-				// 																																																							// a terribly costly operation, so generally it's only
-				// 																																																										// worth it when your index is relatively static (ie
-				// 																																																													// you're done adding documents to it):
-				// 																																																																//
-				// 																																																																			// writer.forceMerge(1);
-				//
-				// 																																																																						writer.close();
-				//
-				// 																																																																									Date end = new Date();
-				// 																																																																												System.out.println(end.getTime() - start.getTime() + " total milliseconds");
-				//
-				// 																																																																														} catch (IOException e) {
-				// 																																																																																	System.out.println(" caught a " + e.getClass() +
-				// 																																																																																						"\n with message: " + e.getMessage());
-				// 																																																																																								}
-				// 																																																																																									}
-				//
-				// 																																																																																										/**
-				// 																																																																																											 * Indexes the given file using the given writer, or if a directory is given,
-				// 																																																																																											 	 * recurses over files and directories found under the given directory.
-				// 																																																																																											 	 	 * 
-				// 																																																																																											 	 	 	 * NOTE: This method indexes one document per input file.  This is slow.  For good
-				// 																																																																																											 	 	 	 	 * throughput, put multiple documents into your input file(s).  An example of this is
-				// 																																																																																											 	 	 	 	 	 * in the benchmark module, which can create "line doc" files, one document per line,
-				// 																																																																																											 	 	 	 	 	 	 * using the
-				// 																																																																																											 	 	 	 	 	 	 	 * <a href="../../../../../contrib-benchmark/org/apache/lucene/benchmark/byTask/tasks/WriteLineDocTask.html"
-				// 																																																																																											 	 	 	 	 	 	 	 	 * >WriteLineDocTask</a>.
-				// 																																																																																											 	 	 	 	 	 	 	 	 	 *  
-				// 																																																																																											 	 	 	 	 	 	 	 	 	 	 * @param writer Writer to the index where the given file/dir info will be stored
-				// 																																																																																											 	 	 	 	 	 	 	 	 	 	 	 * @param file The file to index, or the directory to recurse into to find files to index
-				// 																																																																																											 	 	 	 	 	 	 	 	 	 	 	 	 * @throws IOException If there is a low-level I/O error
-				// 																																																																																											 	 	 	 	 	 	 	 	 	 	 	 	 	 */
-				// 																																																																																											 	 	 	 	 	 	 	 	 	 	 	 	 	 	static void indexDocs(IndexWriter writer, File file)
-				// 																																																																																											 	 	 	 	 	 	 	 	 	 	 	 	 	 				throws IOException {
-				// 																																																																																											 	 	 	 	 	 	 	 	 	 	 	 	 	 						// do not try to index files that cannot be read
-				// 																																																																																											 	 	 	 	 	 	 	 	 	 	 	 	 	 								if (file.canRead()) {
-				// 																																																																																											 	 	 	 	 	 	 	 	 	 	 	 	 	 											if (file.isDirectory()) {
-				// 																																																																																											 	 	 	 	 	 	 	 	 	 	 	 	 	 															String[] files = file.list();
-				// 																																																																																											 	 	 	 	 	 	 	 	 	 	 	 	 	 																			// an IO error could occur
-				// 																																																																																											 	 	 	 	 	 	 	 	 	 	 	 	 	 																							if (files != null) {
-				// 																																																																																											 	 	 	 	 	 	 	 	 	 	 	 	 	 																												for (int i = 0; i < files.length; i++) {
-				// 																																																																																											 	 	 	 	 	 	 	 	 	 	 	 	 	 																																		indexDocs(writer, new File(file, files[i]));
-				// 																																																																																											 	 	 	 	 	 	 	 	 	 	 	 	 	 																																							}
-				// 																																																																																											 	 	 	 	 	 	 	 	 	 	 	 	 	 																																											}
-				// 																																																																																											 	 	 	 	 	 	 	 	 	 	 	 	 	 																																														} else {
-				// 																																																																																											 	 	 	 	 	 	 	 	 	 	 	 	 	 																																																		TrecDocIterator docs = new TrecDocIterator(file);
-				// 																																																																																											 	 	 	 	 	 	 	 	 	 	 	 	 	 																																																						Document doc;
-				// 																																																																																											 	 	 	 	 	 	 	 	 	 	 	 	 	 																																																										while (docs.hasNext()) {
-				// 																																																																																											 	 	 	 	 	 	 	 	 	 	 	 	 	 																																																															doc = docs.next();
-				// 																																																																																											 	 	 	 	 	 	 	 	 	 	 	 	 	 																																																																				if (doc != null && doc.getField("contents") != null)
-				// 																																																																																											 	 	 	 	 	 	 	 	 	 	 	 	 	 																																																																										writer.addDocument(doc);
-				// 																																																																																											 	 	 	 	 	 	 	 	 	 	 	 	 	 																																																																														}
-				// 																																																																																											 	 	 	 	 	 	 	 	 	 	 	 	 	 																																																																																	}
-				// 																																																																																											 	 	 	 	 	 	 	 	 	 	 	 	 	 																																																																																			}
-				// 																																																																																											 	 	 	 	 	 	 	 	 	 	 	 	 	 																																																																																				}
-				// 																																																																																											 	 	 	 	 	 	 	 	 	 	 	 	 	 																																																																																				}
+				// previously indexed documents:
+				iwc.setOpenMode(OpenMode.CREATE);
+			} else {
+				// Add new documents to an existing index:
+				iwc.setOpenMode(OpenMode.CREATE_OR_APPEND);
+			}
+
+			// Optional: for better indexing performance, if you
+			// are indexing many documents, increase the RAM
+			// buffer.  But if you do this, increase the max heap
+			// size to the JVM (eg add -Xmx512m or -Xmx1g):
+			//
+			iwc.setRAMBufferSizeMB(256.0);
+
+			IndexWriter writer = new IndexWriter(dir, iwc);
+			indexDocs(writer, docDir);
+
+			// NOTE: if you want to maximize search performance,
+			// you can optionally call forceMerge here.  This can be
+			// a terribly costly operation, so generally it's only
+			// worth it when your index is relatively static (ie
+			// you're done adding documents to it):
+			//
+			// writer.forceMerge(1);
+
+			writer.close();
+
+			Date end = new Date();
+			System.out.println(end.getTime() - start.getTime() + " total milliseconds");
+
+		} catch (IOException e) {
+			System.out.println(" caught a " + e.getClass() +
+					"\n with message: " + e.getMessage());
+		}
+	}
+
+	/**
+	 * Indexes the given file using the given writer, or if a directory is given,
+	 * recurses over files and directories found under the given directory.
+	 * 
+	 * NOTE: This method indexes one document per input file.  This is slow.  For good
+	 * throughput, put multiple documents into your input file(s).  An example of this is
+	 * in the benchmark module, which can create "line doc" files, one document per line,
+	 * using the
+	 * <a href="../../../../../contrib-benchmark/org/apache/lucene/benchmark/byTask/tasks/WriteLineDocTask.html"
+	 * >WriteLineDocTask</a>.
+	 *  
+	 * @param writer Writer to the index where the given file/dir info will be stored
+	 * @param file The file to index, or the directory to recurse into to find files to index
+	 * @throws IOException If there is a low-level I/O error
+	 */
+	static void indexDocs(IndexWriter writer, File file)
+			throws IOException {
+		// do not try to index files that cannot be read
+		if (file.canRead()) {
+			if (file.isDirectory()) {
+				String[] files = file.list();
+				// an IO error could occur
+				if (files != null) {
+					for (int i = 0; i < files.length; i++) {
+						indexDocs(writer, new File(file, files[i]));
+					}
+				}
+			} else {
+				TrecDocIterator docs = new TrecDocIterator(file);
+				Document doc;
+				while (docs.hasNext()) {
+					doc = docs.next();
+					if (doc != null && doc.getField("contents") != null)
+						writer.addDocument(doc);
+				}
+			}
+		}
+	}
+}
