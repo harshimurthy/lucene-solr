@@ -113,24 +113,25 @@ public class BatchSearch {
 			throws IOException {
 
 		// Collect enough docs to show 5 pages
-		// 		TopDocs results = searcher.search(query, 1000);
-		// 				ScoreDoc[] hits = results.scoreDocs;
-		// 						HashMap<String, String> seen = new HashMap<String, String>(1000);
-		// 								int numTotalHits = results.totalHits;
-		// 										
-		// 												int start = 0;
-		// 														int end = Math.min(numTotalHits, 1000);
-		//
-		// 																for (int i = start; i < end; i++) {
-		// 																			Document doc = searcher.doc(hits[i].doc);
-		// 																						String docno = doc.get("docno");
-		// 																									// There are duplicate document numbers in the FR collection, so only output a given
+		 		TopDocs results = searcher.search(query, 1000);
+		 				ScoreDoc[] hits = results.scoreDocs;
+		 						HashMap<String, String> seen = new HashMap<String, String>(1000);
+		 								int numTotalHits = results.totalHits;
+		 										
+		 												int start = 0;
+		 														int end = Math.min(numTotalHits, 1000);
+		
+		 																for (int i = start; i < end; i++) {
+		 																			Document doc = searcher.doc(hits[i].doc);
+																								String docno = doc.get("docno");
+	
+ 																									// There are duplicate document numbers in the FR collection, so only output a given
 		// 																												// docno once.
-		// 																															if (seen.containsKey(docno)) {
-		// 																																			continue;
-		// 																																						}
-		// 																																									seen.put(docno, docno);
-		// 																																												System.out.println(qid+" Q0 "+docno+" "+i+" "+hits[i].score+" "+runtag);
-		// 																																														}
-		// 																																															}
-		// 																																															}
+		 																															if (seen.containsKey(docno)) {
+		 																																			continue;
+		 																																						}
+		 																																									seen.put(docno, docno);
+		 																																												System.out.println(qid+" Q0 "+docno+" "+i+" "+hits[i].score+" "+runtag);
+		 																																														}
+		 																																															}
+																																																	}
