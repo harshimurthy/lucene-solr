@@ -73,6 +73,6 @@ public class TrecDocIterator implements Iterator<Document> {
 	@Override
 	public void remove() {
 		// Do nothing, but don't complain
-		// 	}
-		//
-		// 	}
+	}
+
+}
